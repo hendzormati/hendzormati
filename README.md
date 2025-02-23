@@ -34,7 +34,7 @@
 👁️ **Total Views (last 14 days):**  
 🔄 **Total Clones (last 14 days):**  
 _Last updated: **<!-- TRAFFIC-DATE -->--><!-- /TRAFFIC-DATE -->_
- 
+  
 **Recent Projects**
 
 🌟 **HelpMeBalance** - Web & desktop app combining Symfony and JavaFX
