@@ -1,0 +1,69 @@
+name: Update GitHub Profile and Repo Traffic
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Get total profile traffic data
+      id: profile_traffic
+      run: |
+        PROFILE_VIEWS=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/users/hendzormati/hendzormati/traffic/views | jq '.count')
+        PROFILE_CLONES=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/users/hendzormati/hendzormati/traffic/clones | jq '.count')
+        echo "Profile Views: $PROFILE_VIEWS"
+        echo "Profile Clones: $PROFILE_CLONES"
+        echo "profile_views=$PROFILE_VIEWS" >> $GITHUB_ENV
+        echo "profile_clones=$PROFILE_CLONES" >> $GITHUB_ENV
+
+    - name: Get total repo traffic data
+      id: repo_traffic
+      run: |
+        repos=("Prometheus-Grafana-Playbooks" "kubernetes-playbooks" "DotNetAngular" "SpringBoot")
+        for repo in "${repos[@]}"; do
+          VIEWS=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/hendzormati/$repo/traffic/views" | jq '.count')
+          CLONES=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/hendzormati/$repo/traffic/clones" | jq '.count')
+          echo "$repo - Views: $VIEWS, Clones: $CLONES"
+          echo "${repo}_views=$VIEWS" >> $GITHUB_ENV
+          echo "${repo}_clones=$CLONES" >> $GITHUB_ENV
+        done
+
+    - name: Update README with traffic data
+      run: |
+        # Set Tunisia timezone
+        export TZ="Africa/Tunis"
+        
+        # Read the existing README file
+        README_CONTENT=$(cat README.md)
+        
+        # Replace placeholders with actual data
+        UPDATED_README=$(echo "$README_CONTENT" | sed "s/PROFILE_VIEWS/${{ env.profile_views }}/g")
+        UPDATED_README=$(echo "$UPDATED_README" | sed "s/PROFILE_CLONES/${{ env.profile_clones }}/g")
+        UPDATED_README=$(echo "$UPDATED_README" | sed "s/PROMETHEUS_VIEWS/${{ env.Prometheus-Grafana-Playbooks_views }}/g")
+        UPDATED_README=$(echo "$UPDATED_README" | sed "s/PROMETHEUS_CLONES/${{ env.Prometheus-Grafana-Playbooks_clones }}/g")
+        UPDATED_README=$(echo "$UPDATED_README" | sed "s/KUBERNETES_VIEWS/${{ env.kubernetes-playbooks_views }}/g")
+        UPDATED_README=$(echo "$UPDATED_README" | sed "s/KUBERNETES_CLONES/${{ env.kubernetes-playbooks_clones }}/g")
+        UPDATED_README=$(echo "$UPDATED_README" | sed "s/DOTNETANGULAR_VIEWS/${{ env.DotNetAngular_views }}/g")
+        UPDATED_README=$(echo "$UPDATED_README" | sed "s/DOTNETANGULAR_CLONES/${{ env.DotNetAngular_clones }}/g")
+        UPDATED_README=$(echo "$UPDATED_README" | sed "s/SPRINGBOOT_VIEWS/${{ env.SpringBoot_views }}/g")
+        UPDATED_README=$(echo "$UPDATED_README" | sed "s/SPRINGBOOT_CLONES/${{ env.SpringBoot_clones }}/g")
+        
+        # Format the last updated date
+        UPDATED_README=$(echo "$UPDATED_README" | sed "s/Last traffic data update:.*/Last traffic data update: **$(date +"%a, %b %d, %Y %T %Z")**/")
+        
+        # Write the updated README back to the file
+        echo "$UPDATED_README" > README.md
+
+    - name: Commit and push changes
+      uses: EndBug/add-and-commit@v7
+      with:
+        author_name: "GitHub Actions"
+        author_email: "actions@github.com"
+        message: "Update README with latest traffic data"
