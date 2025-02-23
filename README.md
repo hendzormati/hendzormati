@@ -29,7 +29,39 @@
 
 ![Git](https://img.shields.io/badge/-Git-F05032?style=flat-square&logo=git&logoColor=white)
 ![ERP](https://img.shields.io/badge/-QAD%20ERP-2C3E50?style=flat-square)
-  
+ 
+## Profile Traffic Overview
+
+Here’s the total traffic for **my GitHub profile**:
+
+- 👁️ **Total Views** of my Profile: **[PROFILE_VIEWS]** views
+- 🔄 **Total Clones** of my Profile: **[PROFILE_CLONES]** clones
+
+---
+
+## Repository Traffic Overview
+
+Here’s the total traffic for **my repositories**:
+
+- **Prometheus-Grafana-Playbooks**
+  - 👁️ **Total Views**: **[PROMETHEUS_VIEWS]** views
+  - 🔄 **Total Clones**: **[PROMETHEUS_CLONES]** clones
+
+- **Kubernetes-Playbooks**
+  - 👁️ **Total Views**: **[KUBERNETES_VIEWS]** views
+  - 🔄 **Total Clones**: **[KUBERNETES_CLONES]** clones
+
+- **DotNetAngular**
+  - 👁️ **Total Views**: **[DOTNETANGULAR_VIEWS]** views
+  - 🔄 **Total Clones**: **[DOTNETANGULAR_CLONES]** clones
+
+- **SpringBoot**
+  - 👁️ **Total Views**: **[SPRINGBOOT_VIEWS]** views
+  - 🔄 **Total Clones**: **[SPRINGBOOT_CLONES]** clones
+
+---
+
+### Last traffic data update: **[LAST_UPDATED]** 
 **Recent Projects**
 
 🌟 **HelpMeBalance** - Web & desktop app combining Symfony and JavaFX
