@@ -30,6 +30,10 @@
 ![Git](https://img.shields.io/badge/-Git-F05032?style=flat-square&logo=git&logoColor=white)
 ![ERP](https://img.shields.io/badge/-QAD%20ERP-2C3E50?style=flat-square)
 
+### 📊 **Repository Stats**
+👁️ **Total Views:**  
+![Views](https://komarev.com/ghpvc/?username=hendzormati&color=blue)  
+
 **Recent Projects**
 
 🌟 **HelpMeBalance** - Web & desktop app combining Symfony and JavaFX
