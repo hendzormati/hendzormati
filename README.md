@@ -34,8 +34,8 @@
 
 Here’s the total traffic for **my GitHub profile**:
 
-- 👁️ **Total Views** of my Profile: **[PROFILE_VIEWS]** views
-- 🔄 **Total Clones** of my Profile: **[PROFILE_CLONES]** clones
+- 👁️ **Total Views** of my Profile: **[null]** views
+- 🔄 **Total Clones** of my Profile: **[null]** clones
 
 ---
 
@@ -44,24 +44,24 @@ Here’s the total traffic for **my GitHub profile**:
 Here’s the total traffic for **my repositories**:
 
 - **Prometheus-Grafana-Playbooks**
-  - 👁️ **Total Views**: **[PROMETHEUS_VIEWS]** views
-  - 🔄 **Total Clones**: **[PROMETHEUS_CLONES]** clones
+  - 👁️ **Total Views**: **[null]** views
+  - 🔄 **Total Clones**: **[null]** clones
 
 - **Kubernetes-Playbooks**
-  - 👁️ **Total Views**: **[KUBERNETES_VIEWS]** views
-  - 🔄 **Total Clones**: **[KUBERNETES_CLONES]** clones
+  - 👁️ **Total Views**: **[null]** views
+  - 🔄 **Total Clones**: **[null]** clones
 
 - **DotNetAngular**
-  - 👁️ **Total Views**: **[DOTNETANGULAR_VIEWS]** views
-  - 🔄 **Total Clones**: **[DOTNETANGULAR_CLONES]** clones
+  - 👁️ **Total Views**: **[null]** views
+  - 🔄 **Total Clones**: **[null]** clones
 
 - **SpringBoot**
-  - 👁️ **Total Views**: **[SPRINGBOOT_VIEWS]** views
-  - 🔄 **Total Clones**: **[SPRINGBOOT_CLONES]** clones
+  - 👁️ **Total Views**: **[null]** views
+  - 🔄 **Total Clones**: **[null]** clones
 
 ---
 
-### Last traffic data update: **[LAST_UPDATED]** 
+### Last traffic data update: **Mon, Feb 24, 2025 00:44:06 CET**
 **Recent Projects**
 
 🌟 **HelpMeBalance** - Web & desktop app combining Symfony and JavaFX
