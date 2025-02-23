@@ -34,30 +34,8 @@
 
 Here’s the total traffic for **my GitHub profile**:
 
-- 👁️ **Total Views** of my Profile: **[null]** views
-- 🔄 **Total Clones** of my Profile: **[null]** clones
-
----
-
-## Repository Traffic Overview
-
-Here’s the total traffic for **my repositories**:
-
-- **Prometheus-Grafana-Playbooks**
-  - 👁️ **Total Views**: **[null]** views
-  - 🔄 **Total Clones**: **[null]** clones
-
-- **Kubernetes-Playbooks**
-  - 👁️ **Total Views**: **[null]** views
-  - 🔄 **Total Clones**: **[null]** clones
-
-- **DotNetAngular**
-  - 👁️ **Total Views**: **[null]** views
-  - 🔄 **Total Clones**: **[null]** clones
-
-- **SpringBoot**
-  - 👁️ **Total Views**: **[null]** views
-  - 🔄 **Total Clones**: **[null]** clones
+- 👁️ Total Views of my Profile: **[null]** views
+- 🔄 Total Clones of my Profile: **[null]** clones
 
 ---
 
