@@ -31,9 +31,10 @@
 ![ERP](https://img.shields.io/badge/-QAD%20ERP-2C3E50?style=flat-square)
 
 ### 📊 **Repository Stats**
-👁️ **Total Views (last 14 days):** ![Repo Views](https://github.com/hendzormati/SpringBoot/actions/workflows/views.yml/badge.svg)  
-🔄 **Total Clones (last 14 days):** _Auto-updated below_ ⬇️  
-
+👁️ **Total Views (last 14 days):**  
+🔄 **Total Clones (last 14 days):**  
+_Last updated: **<!-- TRAFFIC-DATE -->--><!-- /TRAFFIC-DATE -->_
+ 
 **Recent Projects**
 
 🌟 **HelpMeBalance** - Web & desktop app combining Symfony and JavaFX
