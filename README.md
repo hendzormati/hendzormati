@@ -34,8 +34,6 @@
 👁️ **Total Views (last 14 days):** ![Repo Views](https://github.com/hendzormati/SpringBoot/actions/workflows/views.yml/badge.svg)  
 🔄 **Total Clones (last 14 days):** _Auto-updated below_ ⬇️  
 
-_Last updated: **<!-- TRAFFIC-DATE -->--><!-- /TRAFFIC-DATE -->_
-
 **Recent Projects**
 
 🌟 **HelpMeBalance** - Web & desktop app combining Symfony and JavaFX
