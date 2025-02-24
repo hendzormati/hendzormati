@@ -1,4 +1,4 @@
-name: Update Profile README with Traffic
+name: Update Profile README with Repo Traffic
 
 on:
   push:
@@ -13,30 +13,43 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Get profile traffic data
-      id: profile_traffic
+    - name: Get repo traffic data
+      id: traffic
       run: |
-        # Fetch total views and clones data for the profile from GitHub API
-        PROFILE_VIEWS=$(curl -s -H "Authorization: token ${{ secrets.PAT_SECRET }}" https://api.github.com/users/hendzormati/views)
-        PROFILE_CLONES=$(curl -s -H "Authorization: token ${{ secrets.PAT_SECRET }}" https://api.github.com/users/hendzormati/clones)
+        # Fetch traffic data for multiple repositories
+        PROMETHEUS_VIEWS=$(curl -s -H "Authorization: token ${{ secrets.PAT_SECRET }}" https://api.github.com/repos/hendzormati/Prometheus-Grafana-Playbooks/traffic/views)
+        PROMETHEUS_CLONES=$(curl -s -H "Authorization: token ${{ secrets.PAT_SECRET }}" https://api.github.com/repos/hendzormati/Prometheus-Grafana-Playbooks/traffic/clones)
 
-        # Debugging the raw response
-        echo "PROFILE VIEWS Response: $PROFILE_VIEWS"
-        echo "PROFILE CLONES Response: $PROFILE_CLONES"
+        K8S_VIEWS=$(curl -s -H "Authorization: token ${{ secrets.PAT_SECRET }}" https://api.github.com/repos/hendzormati/kubernetes-playbooks/traffic/views)
+        K8S_CLONES=$(curl -s -H "Authorization: token ${{ secrets.PAT_SECRET }}" https://api.github.com/repos/hendzormati/kubernetes-playbooks/traffic/clones)
+
+        DOTNET_VIEWS=$(curl -s -H "Authorization: token ${{ secrets.PAT_SECRET }}" https://api.github.com/repos/hendzormati/DotNetAngular/traffic/views)
+        DOTNET_CLONES=$(curl -s -H "Authorization: token ${{ secrets.PAT_SECRET }}" https://api.github.com/repos/hendzormati/DotNetAngular/traffic/clones)
+
+        SPRINGBOOT_VIEWS=$(curl -s -H "Authorization: token ${{ secrets.PAT_SECRET }}" https://api.github.com/repos/hendzormati/SpringBoot/traffic/views)
+        SPRINGBOOT_CLONES=$(curl -s -H "Authorization: token ${{ secrets.PAT_SECRET }}" https://api.github.com/repos/hendzormati/SpringBoot/traffic/clones)
         
         # Parse the counts from the API responses
-        PROFILE_VIEWS_COUNT=$(echo $PROFILE_VIEWS | jq '.count')
-        PROFILE_CLONES_COUNT=$(echo $PROFILE_CLONES | jq '.count')
+        PROMETHEUS_VIEWS_COUNT=$(echo $PROMETHEUS_VIEWS | jq '.count')
+        PROMETHEUS_CLONES_COUNT=$(echo $PROMETHEUS_CLONES | jq '.count')
 
-        # Output the counts for later use in the workflow
-        echo "Total Profile Views: $PROFILE_VIEWS_COUNT"
-        echo "Total Profile Clones: $PROFILE_CLONES_COUNT"
+        K8S_VIEWS_COUNT=$(echo $K8S_VIEWS | jq '.count')
+        K8S_CLONES_COUNT=$(echo $K8S_CLONES | jq '.count')
+
+        DOTNET_VIEWS_COUNT=$(echo $DOTNET_VIEWS | jq '.count')
+        DOTNET_CLONES_COUNT=$(echo $DOTNET_CLONES | jq '.count')
+
+        SPRINGBOOT_VIEWS_COUNT=$(echo $SPRINGBOOT_VIEWS | jq '.count')
+        SPRINGBOOT_CLONES_COUNT=$(echo $SPRINGBOOT_CLONES | jq '.count')
+
+        # Calculate totals
+        TOTAL_VIEWS=$((PROMETHEUS_VIEWS_COUNT + K8S_VIEWS_COUNT + DOTNET_VIEWS_COUNT + SPRINGBOOT_VIEWS_COUNT))
+        TOTAL_CLONES=$((PROMETHEUS_CLONES_COUNT + K8S_CLONES_COUNT + DOTNET_CLONES_COUNT + SPRINGBOOT_CLONES_COUNT))
 
         # Set the output for later use
-        echo "profile_views_count=$PROFILE_VIEWS_COUNT" >> $GITHUB_ENV
-        echo "profile_clones_count=$PROFILE_CLONES_COUNT" >> $GITHUB_ENV
-
-    - name: Update README with profile traffic data
+        echo "total_views=$TOTAL_VIEWS" >> $GITHUB_ENV
+        echo "total_clones=$TOTAL_CLONES" >> $GITHUB_ENV
+    - name: Update README with traffic data
       run: |
         # Set Tunisia timezone
         export TZ="Africa/Tunis"
@@ -45,18 +58,17 @@ jobs:
         README_CONTENT=$(cat README.md)
         
         # Replace placeholders with actual data
-        UPDATED_README=$(echo "$README_CONTENT" | sed "s/👁️ Total Views of my Profile:.*/👁️ **Total Views** of my Profile: **${{ env.profile_views_count }}** views/")
-        UPDATED_README=$(echo "$UPDATED_README" | sed "s/🔄 Total Clones of my Profile:.*/🔄 **Total Clones** of my Profile: **${{ env.profile_clones_count }}** clones/")
+        UPDATED_README=$(echo "$README_CONTENT" | sed "s/👁️ Total Views of my Profile:.*/👁️ **Total Views** of my Profile: **${{ env.total_views }}** views/")
+        UPDATED_README=$(echo "$UPDATED_README" | sed "s/🔄 Total Clones of my Profile:.*/🔄 **Total Clones** of my Profile: **${{ env.total_clones }}** clones/")
         
-        # Format the last updated date
-        UPDATED_README=$(echo "$UPDATED_README" | sed "s/Last traffic data update:.*/Last traffic data update: **$(date +"%a, %b %d, %Y %T %Z")**/")
-
+        # Format date to Tunisia's local time
+        UPDATED_README=$(echo "$UPDATED_README" | sed "s/Last traffic data update:.*/Last traffic data update: **$(date +"%a %b %d %Y %T %Z")**/")
+        
         # Write the updated README back to the file
         echo "$UPDATED_README" > README.md
-
     - name: Commit and push changes
       uses: EndBug/add-and-commit@v7
       with:
         author_name: "GitHub Actions"
         author_email: "actions@github.com"
-        message: "Update README with latest profile traffic"
+        message: "Update README with latest repo traffic"
