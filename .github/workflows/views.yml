@@ -1,21 +1,31 @@
 name: Update Profile README with Repo Traffic
 
 on:
-  push:
-    branches:
-      - main
-  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *'  # Run once daily at midnight
+  workflow_dispatch:      # Keep manual trigger for testing
 
 jobs:
   update-readme:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 1    # Shallow clone to minimize impact
 
     - name: Get repo traffic data
       id: traffic
       run: |
+        # Get current values from README to compare
+        if [ -f README.md ]; then
+          CURRENT_TOTAL_VIEWS=$(grep -oP '👁️ \*\*Total Views\*\* of my Profile: \*\*\K[0-9]+' README.md || echo "0")
+          CURRENT_TOTAL_CLONES=$(grep -oP '🔄 \*\*Total Clones\*\* of my Profile: \*\*\K[0-9]+' README.md || echo "0")
+        else
+          CURRENT_TOTAL_VIEWS="0"
+          CURRENT_TOTAL_CLONES="0"
+        fi
+
         # Fetch traffic data for multiple repositories
         PROMETHEUS_VIEWS=$(curl -s -H "Authorization: token ${{ secrets.PAT_SECRET }}" https://api.github.com/repos/hendzormati/Prometheus-Grafana-Playbooks/traffic/views)
         PROMETHEUS_CLONES=$(curl -s -H "Authorization: token ${{ secrets.PAT_SECRET }}" https://api.github.com/repos/hendzormati/Prometheus-Grafana-Playbooks/traffic/clones)
@@ -33,50 +43,50 @@ jobs:
         SPRINGBOOT_CLONES=$(curl -s -H "Authorization: token ${{ secrets.PAT_SECRET }}" https://api.github.com/repos/hendzormati/SpringBoot/traffic/clones)
         
         # Parse the counts from the API responses
-        PROMETHEUS_VIEWS_COUNT=$(echo $PROMETHEUS_VIEWS | jq '.count')
-        PROMETHEUS_CLONES_COUNT=$(echo $PROMETHEUS_CLONES | jq '.count')
+        PROMETHEUS_VIEWS_COUNT=$(echo $PROMETHEUS_VIEWS | jq '.count // 0')
+        PROMETHEUS_CLONES_COUNT=$(echo $PROMETHEUS_CLONES | jq '.count // 0')
 
-        K8S_VIEWS_COUNT=$(echo $K8S_VIEWS | jq '.count')
-        K8S_CLONES_COUNT=$(echo $K8S_CLONES | jq '.count')
+        K8S_VIEWS_COUNT=$(echo $K8S_VIEWS | jq '.count // 0')
+        K8S_CLONES_COUNT=$(echo $K8S_CLONES | jq '.count // 0')
 
-        DOTNET_VIEWS_COUNT=$(echo $DOTNET_VIEWS | jq '.count')
-        DOTNET_CLONES_COUNT=$(echo $DOTNET_CLONES | jq '.count')
+        DOTNET_VIEWS_COUNT=$(echo $DOTNET_VIEWS | jq '.count // 0')
+        DOTNET_CLONES_COUNT=$(echo $DOTNET_CLONES | jq '.count // 0')
 
-        ANGULAR_VIEWS_COUNT=$(echo $ANGULAR_VIEWS | jq '.count')
-        ANGULAR_CLONES_COUNT=$(echo $ANGULAR_CLONES | jq '.count')
+        ANGULAR_VIEWS_COUNT=$(echo $ANGULAR_VIEWS | jq '.count // 0')
+        ANGULAR_CLONES_COUNT=$(echo $ANGULAR_CLONES | jq '.count // 0')
 
-        SPRINGBOOT_VIEWS_COUNT=$(echo $SPRINGBOOT_VIEWS | jq '.count')
-        SPRINGBOOT_CLONES_COUNT=$(echo $SPRINGBOOT_CLONES | jq '.count')
+        SPRINGBOOT_VIEWS_COUNT=$(echo $SPRINGBOOT_VIEWS | jq '.count // 0')
+        SPRINGBOOT_CLONES_COUNT=$(echo $SPRINGBOOT_CLONES | jq '.count // 0')
 
         # Calculate totals
         TOTAL_VIEWS=$((PROMETHEUS_VIEWS_COUNT + K8S_VIEWS_COUNT + DOTNET_VIEWS_COUNT + ANGULAR_VIEWS_COUNT + SPRINGBOOT_VIEWS_COUNT))
         TOTAL_CLONES=$((PROMETHEUS_CLONES_COUNT + K8S_CLONES_COUNT + DOTNET_CLONES_COUNT + ANGULAR_CLONES_COUNT + SPRINGBOOT_CLONES_COUNT))
 
-        # Set the output for later use
+        # Only proceed if numbers have changed
+        if [ "$TOTAL_VIEWS" != "$CURRENT_TOTAL_VIEWS" ] || [ "$TOTAL_CLONES" != "$CURRENT_TOTAL_CLONES" ]; then
+          echo "NUMBERS_CHANGED=true" >> $GITHUB_ENV
+        else
+          echo "NUMBERS_CHANGED=false" >> $GITHUB_ENV
+        fi
+
         echo "total_views=$TOTAL_VIEWS" >> $GITHUB_ENV
         echo "total_clones=$TOTAL_CLONES" >> $GITHUB_ENV
 
     - name: Update README with traffic data
+      if: env.NUMBERS_CHANGED == 'true'
       run: |
-        # Set Tunisia timezone
         export TZ="Africa/Tunis"
-        
-        # Read the existing README file
         README_CONTENT=$(cat README.md)
-        
-        # Replace placeholders with actual data
         UPDATED_README=$(echo "$README_CONTENT" | sed "s/👁️ \*\*Total Views\*\* of my Profile: \*\*.*\*\* views/👁️ \*\*Total Views\*\* of my Profile: \*\*${{ env.total_views }}\*\* views/")
         UPDATED_README=$(echo "$UPDATED_README" | sed "s/🔄 \*\*Total Clones\*\* of my Profile: \*\*.*\*\* clones/🔄 \*\*Total Clones\*\* of my Profile: \*\*${{ env.total_clones }}\*\* clones/")
-
-        # Format date to Tunisia's local time
         UPDATED_README=$(echo "$UPDATED_README" | sed "s/Last traffic data update:.*/Last traffic data update: **$(date +"%a %b %d %Y %T %Z")**/")
-        
-        # Write the updated README back to the file
         echo "$UPDATED_README" > README.md
 
     - name: Commit and push changes
-      uses: EndBug/add-and-commit@v7
+      if: env.NUMBERS_CHANGED == 'true'
+      uses: EndBug/add-and-commit@v9
       with:
         author_name: "GitHub Actions"
         author_email: "actions@github.com"
         message: "Update README with latest repo traffic"
+        add: "README.md"
