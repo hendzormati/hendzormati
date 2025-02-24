@@ -58,8 +58,9 @@ jobs:
         README_CONTENT=$(cat README.md)
         
         # Replace placeholders with actual data
-        UPDATED_README=$(echo "$README_CONTENT" | sed "s/👁️ Total Views of my Profile:.*/👁️ **Total Views** of my Profile: **${{ env.total_views }}** views/")
-        UPDATED_README=$(echo "$UPDATED_README" | sed "s/🔄 Total Clones of my Profile:.*/🔄 **Total Clones** of my Profile: **${{ env.total_clones }}** clones/")
+        UPDATED_README=$(echo "$README_CONTENT" | sed "s/👁️ \*\*Total Views\*\* of my Profile: \*\*.*\*\* views/👁️ \*\*Total Views\*\* of my Profile: \*\*${{ env.total_views }}\*\* views/")
+        UPDATED_README=$(echo "$UPDATED_README" | sed "s/🔄 \*\*Total Clones\*\* of my Profile: \*\*.*\*\* clones/🔄 \*\*Total Clones\*\* of my Profile: \*\*${{ env.total_clones }}\*\* clones/")
+
         
         # Format date to Tunisia's local time
         UPDATED_README=$(echo "$UPDATED_README" | sed "s/Last traffic data update:.*/Last traffic data update: **$(date +"%a %b %d %Y %T %Z")**/")
