@@ -1,7 +1,7 @@
 # Hend Zormati
 
 ### Engineering Student at ESPRIT 🎓
-
+<p align="left"> <img src="https://komarev.com/ghpvc/?username=hendzormati&label=Profile%20views&color=0e75b6&style=flat" alt="hendzormati" /> </p>
 **About me**
 - 💻 Currently exploring cloud computing and software development
 - 🌱 Learning and building with .NET, QAD ERP, and desktop applications
