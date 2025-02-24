@@ -23,8 +23,11 @@ jobs:
         K8S_VIEWS=$(curl -s -H "Authorization: token ${{ secrets.PAT_SECRET }}" https://api.github.com/repos/hendzormati/kubernetes-playbooks/traffic/views)
         K8S_CLONES=$(curl -s -H "Authorization: token ${{ secrets.PAT_SECRET }}" https://api.github.com/repos/hendzormati/kubernetes-playbooks/traffic/clones)
 
-        DOTNET_VIEWS=$(curl -s -H "Authorization: token ${{ secrets.PAT_SECRET }}" https://api.github.com/repos/hendzormati/DotNetAngular/traffic/views)
-        DOTNET_CLONES=$(curl -s -H "Authorization: token ${{ secrets.PAT_SECRET }}" https://api.github.com/repos/hendzormati/DotNetAngular/traffic/clones)
+        DOTNET_VIEWS=$(curl -s -H "Authorization: token ${{ secrets.PAT_SECRET }}" https://api.github.com/repos/hendzormati/DotNet/traffic/views)
+        DOTNET_CLONES=$(curl -s -H "Authorization: token ${{ secrets.PAT_SECRET }}" https://api.github.com/repos/hendzormati/DotNet/traffic/clones)
+
+        ANGULAR_VIEWS=$(curl -s -H "Authorization: token ${{ secrets.PAT_SECRET }}" https://api.github.com/repos/hendzormati/Angular/traffic/views)
+        ANGULAR_CLONES=$(curl -s -H "Authorization: token ${{ secrets.PAT_SECRET }}" https://api.github.com/repos/hendzormati/Angular/traffic/clones)
 
         SPRINGBOOT_VIEWS=$(curl -s -H "Authorization: token ${{ secrets.PAT_SECRET }}" https://api.github.com/repos/hendzormati/SpringBoot/traffic/views)
         SPRINGBOOT_CLONES=$(curl -s -H "Authorization: token ${{ secrets.PAT_SECRET }}" https://api.github.com/repos/hendzormati/SpringBoot/traffic/clones)
@@ -39,16 +42,20 @@ jobs:
         DOTNET_VIEWS_COUNT=$(echo $DOTNET_VIEWS | jq '.count')
         DOTNET_CLONES_COUNT=$(echo $DOTNET_CLONES | jq '.count')
 
+        ANGULAR_VIEWS_COUNT=$(echo $ANGULAR_VIEWS | jq '.count')
+        ANGULAR_CLONES_COUNT=$(echo $ANGULAR_CLONES | jq '.count')
+
         SPRINGBOOT_VIEWS_COUNT=$(echo $SPRINGBOOT_VIEWS | jq '.count')
         SPRINGBOOT_CLONES_COUNT=$(echo $SPRINGBOOT_CLONES | jq '.count')
 
         # Calculate totals
-        TOTAL_VIEWS=$((PROMETHEUS_VIEWS_COUNT + K8S_VIEWS_COUNT + DOTNET_VIEWS_COUNT + SPRINGBOOT_VIEWS_COUNT))
-        TOTAL_CLONES=$((PROMETHEUS_CLONES_COUNT + K8S_CLONES_COUNT + DOTNET_CLONES_COUNT + SPRINGBOOT_CLONES_COUNT))
+        TOTAL_VIEWS=$((PROMETHEUS_VIEWS_COUNT + K8S_VIEWS_COUNT + DOTNET_VIEWS_COUNT + ANGULAR_VIEWS_COUNT + SPRINGBOOT_VIEWS_COUNT))
+        TOTAL_CLONES=$((PROMETHEUS_CLONES_COUNT + K8S_CLONES_COUNT + DOTNET_CLONES_COUNT + ANGULAR_CLONES_COUNT + SPRINGBOOT_CLONES_COUNT))
 
         # Set the output for later use
         echo "total_views=$TOTAL_VIEWS" >> $GITHUB_ENV
         echo "total_clones=$TOTAL_CLONES" >> $GITHUB_ENV
+
     - name: Update README with traffic data
       run: |
         # Set Tunisia timezone
@@ -61,12 +68,12 @@ jobs:
         UPDATED_README=$(echo "$README_CONTENT" | sed "s/👁️ \*\*Total Views\*\* of my Profile: \*\*.*\*\* views/👁️ \*\*Total Views\*\* of my Profile: \*\*${{ env.total_views }}\*\* views/")
         UPDATED_README=$(echo "$UPDATED_README" | sed "s/🔄 \*\*Total Clones\*\* of my Profile: \*\*.*\*\* clones/🔄 \*\*Total Clones\*\* of my Profile: \*\*${{ env.total_clones }}\*\* clones/")
 
-        
         # Format date to Tunisia's local time
         UPDATED_README=$(echo "$UPDATED_README" | sed "s/Last traffic data update:.*/Last traffic data update: **$(date +"%a %b %d %Y %T %Z")**/")
         
         # Write the updated README back to the file
         echo "$UPDATED_README" > README.md
+
     - name: Commit and push changes
       uses: EndBug/add-and-commit@v7
       with:
