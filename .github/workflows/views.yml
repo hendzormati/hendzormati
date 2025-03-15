@@ -17,17 +17,6 @@ jobs:
     - name: Get repo traffic data
       id: traffic
       run: |
-        # Get current values from README to compare
-        if [ -f README.md ]; then
-          CURRENT_TOTAL_VIEWS=$(grep -oP '👁️ \*\*Total Views\*\* \\(Last 14 days\\): \*\*\K[0-9]+' README.md || echo "0")
-          CURRENT_TOTAL_CLONES=$(grep -oP '🔄 \*\*Total Clones\*\* \\(Last 14 days\\): \*\*\K[0-9]+' README.md || echo "0")
-        else
-          CURRENT_TOTAL_VIEWS="0"
-          CURRENT_TOTAL_CLONES="0"
-        fi
-        
-        echo "Current values found in README: Views=$CURRENT_TOTAL_VIEWS, Clones=$CURRENT_TOTAL_CLONES"
-
         # Fetch traffic data for multiple repositories
         PROMETHEUS_VIEWS=$(curl -s -H "Authorization: token ${{ secrets.PAT_SECRET }}" https://api.github.com/repos/hendzormati/Prometheus-Grafana-Playbooks/traffic/views)
         PROMETHEUS_CLONES=$(curl -s -H "Authorization: token ${{ secrets.PAT_SECRET }}" https://api.github.com/repos/hendzormati/Prometheus-Grafana-Playbooks/traffic/clones)
@@ -64,14 +53,7 @@ jobs:
         TOTAL_VIEWS=$((PROMETHEUS_VIEWS_COUNT + K8S_VIEWS_COUNT + DOTNET_VIEWS_COUNT + ANGULAR_VIEWS_COUNT + SPRINGBOOT_VIEWS_COUNT))
         TOTAL_CLONES=$((PROMETHEUS_CLONES_COUNT + K8S_CLONES_COUNT + DOTNET_CLONES_COUNT + ANGULAR_CLONES_COUNT + SPRINGBOOT_CLONES_COUNT))
         
-        echo "New calculated totals: Views=$TOTAL_VIEWS, Clones=$TOTAL_CLONES"
-
-        # Only proceed if numbers have changed
-        if [ "$TOTAL_VIEWS" != "$CURRENT_TOTAL_VIEWS" ] || [ "$TOTAL_CLONES" != "$CURRENT_TOTAL_CLONES" ]; then
-          echo "NUMBERS_CHANGED=true" >> $GITHUB_ENV
-        else
-          echo "NUMBERS_CHANGED=false" >> $GITHUB_ENV
-        fi
+        echo "Calculated totals: Views=$TOTAL_VIEWS, Clones=$TOTAL_CLONES"
 
         echo "total_views=$TOTAL_VIEWS" >> $GITHUB_ENV
         echo "total_clones=$TOTAL_CLONES" >> $GITHUB_ENV
@@ -79,22 +61,28 @@ jobs:
     - name: Update README with traffic data
       run: |
         export TZ="Africa/Tunis"
-        README_CONTENT=$(cat README.md)
         
-        # Show original content
-        echo "Original README content snapshot:"
-        echo "$README_CONTENT" | grep -A 3 "Profile Traffic Overview"
+        # Create a temporary file with the updated content
+        cat README.md | awk -v views="${{ env.total_views }}" -v clones="${{ env.total_clones }}" '
+        {
+          if ($0 ~ /👁️ \*\*Total Views\*\* \(Last 14 days\): \*\*[0-9]+\*\* views/) {
+            gsub(/\*\*[0-9]+\*\* views/, "**" views "** views")
+          }
+          else if ($0 ~ /🔄 \*\*Total Clones\*\* \(Last 14 days\): \*\*[0-9]+\*\* clones/) {
+            gsub(/\*\*[0-9]+\*\* clones/, "**" clones "** clones")
+          }
+          else if ($0 ~ /Last traffic data update:/) {
+            $0 = "Last traffic data update: **" strftime("%a %b %d %Y %T %Z") "**"
+          }
+          print $0
+        }' > README.tmp
         
-        # Using more robust pattern matching with escaped parentheses
-        UPDATED_README=$(echo "$README_CONTENT" | sed -E "s/(👁️ \*\*Total Views\*\* \\\(Last 14 days\\\): \*\*)[0-9]+(\*\* views)/\1${{ env.total_views }}\2/")
-        UPDATED_README=$(echo "$UPDATED_README" | sed -E "s/(🔄 \*\*Total Clones\*\* \\\(Last 14 days\\\): \*\*)[0-9]+(\*\* clones)/\1${{ env.total_clones }}\2/")
-        UPDATED_README=$(echo "$UPDATED_README" | sed "s/Last traffic data update:.*/Last traffic data update: **$(date +"%a %b %d %Y %T %Z")**/")
+        # Replace the original README with the updated content
+        mv README.tmp README.md
         
-        # Show updated content
-        echo "Updated README content snapshot:"
-        echo "$UPDATED_README" | grep -A 3 "Profile Traffic Overview"
-        
-        echo "$UPDATED_README" > README.md
+        # Show the updated part
+        echo "Updated README content:"
+        grep -A 4 "Profile Traffic Overview" README.md
 
     - name: Commit and push changes
       uses: EndBug/add-and-commit@v9
