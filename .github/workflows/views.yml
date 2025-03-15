@@ -19,8 +19,8 @@ jobs:
       run: |
         # Get current values from README to compare
         if [ -f README.md ]; then
-          CURRENT_TOTAL_VIEWS=$(grep -oP '👁️ \*\*Total Views\*\* of my Profile: \*\*\K[0-9]+' README.md || echo "0")
-          CURRENT_TOTAL_CLONES=$(grep -oP '🔄 \*\*Total Clones\*\* of my Profile: \*\*\K[0-9]+' README.md || echo "0")
+          CURRENT_TOTAL_VIEWS=$(grep -oP '👁️ \*\*Total Views\*\* \(Last 14 days\): \*\*\K[0-9]+' README.md || echo "0")
+          CURRENT_TOTAL_CLONES=$(grep -oP '🔄 \*\*Total Clones\*\* \(Last 14 days\): \*\*\K[0-9]+' README.md || echo "0")
         else
           CURRENT_TOTAL_VIEWS="0"
           CURRENT_TOTAL_CLONES="0"
