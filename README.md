@@ -31,12 +31,9 @@
 ![ERP](https://img.shields.io/badge/-QAD%20ERP-2C3E50?style=flat-square)
  
 ## Profile Traffic Overview
-
-Here’s the total traffic for **my GitHub profile**:
-
-- 👁️ **Total Views** \(Last 14 days\): **0** views
-- 🔄 **Total Clones** \(Last 14 days\): **0** clones
-
+Here's the total traffic for **my GitHub profile**:
+- 👁️ **Total Views** (Last 14 days): **0** views
+- 🔄 **Total Clones** (Last 14 days): **0** clones
 ---
 
 ### Last traffic data update: **Sat Mar 15 2025 15:26:31 CET**
