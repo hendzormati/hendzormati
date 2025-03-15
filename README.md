@@ -34,8 +34,8 @@
 
 Here’s the total traffic for **my GitHub profile**:
 
-- 👁️ **Total Views** of my Profile: **56** views
-- 🔄 **Total Clones** of my Profile: **41** clones
+- 👁️ **Total Views** \(Last 14 days\): **56** views
+- 🔄 **Total Clones** \(Last 14 days\): **40** clones
 
 ---
 
