@@ -32,11 +32,11 @@
  
 ## Profile Traffic Overview
 Here's the total traffic for **my GitHub profile**:
-- 👁️ **Total Views** (Last 14 days): **18** views
-- 🔄 **Total Clones** (Last 14 days): **107** clones
+- 👁️ **Total Views** (Last 14 days): **32** views
+- 🔄 **Total Clones** (Last 14 days): **93** clones
 ---
 
-Last traffic data update: **Sun Aug 09 2026 01:41:30 CET**
+Last traffic data update: **Sun Aug 16 2026 01:29:35 CET**
 **Recent Projects**
 
 🌟 **HelpMeBalance** - Web & desktop app combining Symfony and JavaFX
