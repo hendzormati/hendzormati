@@ -3,6 +3,7 @@
 [![Français](https://img.shields.io/badge/Français-287A57?style=for-the-badge)](README.md)
 [![English](https://img.shields.io/badge/English-176B96?style=for-the-badge)](README.en.md)
 
+![Profile views](https://komarev.com/ghpvc/?username=hendzormati&label=Profile%20views&color=287A57&style=flat)
 ### Développement Full-Stack | Cloud & DevOps
 
 Étudiante en dernière année de double diplôme d’ingénieure **ESPRIT–ENSIM**, avec une spécialisation en **Cloud Computing** et en **Interaction Personnes-Systèmes**.
