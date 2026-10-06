@@ -53,5 +53,28 @@ I enjoy exploring new technologies and putting my energy into bringing ideas to 
 ## Project traffic
 
 <!-- TRAFFIC:START -->
-Statistics will appear after the first workflow run.
+**Statistics for the last 14 days, across 10 tracked repositories.**
+
+These counts measure repository traffic and do not represent unique visitors.
+
+- **Total views: 52**
+- **Total clones: 240**
+
+### Top 3 — Most viewed projects
+
+| Rank | Project | Views |
+|---|---|---:|
+| 1 | [qad_progress4gl](https://github.com/hendzormati/qad_progress4gl) | 20 |
+| 2 | [Prometheus-Grafana-Playbooks](https://github.com/hendzormati/Prometheus-Grafana-Playbooks) | 14 |
+| 3 | [kubernetes-playbooks](https://github.com/hendzormati/kubernetes-playbooks) | 10 |
+
+### Top 3 — Most cloned projects
+
+| Rank | Project | Clones |
+|---|---|---:|
+| 1 | [kubernetes-playbooks](https://github.com/hendzormati/kubernetes-playbooks) | 67 |
+| 2 | [SpringBoot](https://github.com/hendzormati/SpringBoot) | 46 |
+| 3 | [DotNet](https://github.com/hendzormati/DotNet) | 39 |
+
+Last updated : **2026-10-06 17:44 CEST (Europe/Paris)**
 <!-- TRAFFIC:END -->
