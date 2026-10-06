@@ -1,0 +1,243 @@
+name: Update README with Repository Traffic
+
+on:
+  schedule:
+    - cron: '0 0 * * 0'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: profile-traffic
+  cancel-in-progress: false
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          ref: ${{ github.event.repository.default_branch }}
+
+      - name: Fetch traffic and update both READMEs
+        env:
+          TRAFFIC_TOKEN: ${{ secrets.PAT_SECRET }}
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          import re
+          from datetime import datetime
+          from pathlib import Path
+          from urllib.error import HTTPError, URLError
+          from urllib.request import Request, urlopen
+          from zoneinfo import ZoneInfo
+
+          OWNER = "hendzormati"
+          REPOSITORIES = [
+              "Prometheus-Grafana-Playbooks",
+              "kubernetes-playbooks",
+              "DotNet",
+              "Angular",
+              "SpringBoot",
+              "qad_progress4gl",
+              "simple-k8s-mcp-server",
+              "Cuteness-Overdose-Vr",
+              "Cocorico_RA",
+              "chatbot-api-ensim",
+          ]
+
+          START = "<!-- TRAFFIC:START -->"
+          END = "<!-- TRAFFIC:END -->"
+
+          token = os.environ.get("TRAFFIC_TOKEN")
+          if not token:
+              raise RuntimeError(
+                  "Missing PAT_SECRET. Add it to the repository Actions secrets."
+              )
+
+          def fetch_count(repository, metric):
+              request = Request(
+                  f"https://api.github.com/repos/{OWNER}/{repository}/traffic/{metric}",
+                  headers={
+                      "Authorization": f"Bearer {token}",
+                      "Accept": "application/vnd.github+json",
+                      "X-GitHub-Api-Version": "2026-03-10",
+                      "User-Agent": "hendzormati-profile-traffic",
+                  },
+              )
+
+              try:
+                  with urlopen(request, timeout=30) as response:
+                      data = json.load(response)
+              except HTTPError as error:
+                  raise RuntimeError(
+                      f"{repository}/{metric}: HTTP {error.code}. "
+                      "Check PAT_SECRET permissions and repository access."
+                  ) from None
+              except (URLError, TimeoutError):
+                  raise RuntimeError(
+                      f"{repository}/{metric}: network request failed."
+                  ) from None
+
+              count = data.get("count")
+              if type(count) is not int or count < 0:
+                  raise RuntimeError(
+                      f"{repository}/{metric}: invalid traffic data."
+                  )
+              return count
+
+          # Fetch every repository before changing either README.
+          rows = []
+          for repository in REPOSITORIES:
+              rows.append({
+                  "repository": repository,
+                  "views": fetch_count(repository, "views"),
+                  "clones": fetch_count(repository, "clones"),
+              })
+
+          timestamp = datetime.now(
+              ZoneInfo("Europe/Paris")
+          ).strftime("%Y-%m-%d %H:%M %Z")
+
+          def render(language):
+              french = language == "fr"
+
+              if french:
+                  lines = [
+                      "**Statistiques des 14 derniers jours, "
+                      "sur les 10 dépôts suivis.**",
+                      "",
+                      "Ces chiffres concernent les dépôts et "
+                      "ne correspondent pas à des visiteurs uniques.",
+                      "",
+                      f"- **Vues totales : {sum(r['views'] for r in rows)}**",
+                      f"- **Clones totaux : {sum(r['clones'] for r in rows)}**",
+                      "",
+                  ]
+              else:
+                  lines = [
+                      "**Statistics for the last 14 days, "
+                      "across 10 tracked repositories.**",
+                      "",
+                      "These counts measure repository traffic "
+                      "and do not represent unique visitors.",
+                      "",
+                      f"- **Total views: {sum(r['views'] for r in rows)}**",
+                      f"- **Total clones: {sum(r['clones'] for r in rows)}**",
+                      "",
+                  ]
+
+              for metric in ("views", "clones"):
+                  if french:
+                      heading = (
+                          "Top 3 — Projets les plus consultés"
+                          if metric == "views"
+                          else "Top 3 — Projets les plus clonés"
+                      )
+                      column = "Vues" if metric == "views" else "Clones"
+                      header = f"| Rang | Projet | {column} |"
+                  else:
+                      heading = (
+                          "Top 3 — Most viewed projects"
+                          if metric == "views"
+                          else "Top 3 — Most cloned projects"
+                      )
+                      column = "Views" if metric == "views" else "Clones"
+                      header = f"| Rank | Project | {column} |"
+
+                  lines.extend([
+                      f"### {heading}",
+                      "",
+                      header,
+                      "|---|---|---:|",
+                  ])
+
+                  ranked = sorted(
+                      (row for row in rows if row[metric] > 0),
+                      key=lambda row: (
+                          -row[metric],
+                          row["repository"].lower(),
+                      ),
+                  )[:3]
+
+                  for rank, row in enumerate(ranked, start=1):
+                      repository = row["repository"]
+                      link = (
+                          f"[{repository}]"
+                          f"(https://github.com/{OWNER}/{repository})"
+                      )
+                      lines.append(
+                          f"| {rank} | {link} | {row[metric]} |"
+                      )
+
+                  if not ranked:
+                      message = (
+                          "Aucune activité sur cette période"
+                          if french
+                          else "No activity during this period"
+                      )
+                      lines.append(f"| — | {message} | 0 |")
+
+                  lines.append("")
+
+              label = (
+                  "Dernière mise à jour"
+                  if french
+                  else "Last updated"
+              )
+              lines.append(
+                  f"{label} : **{timestamp} (Europe/Paris)**"
+              )
+              return "\n".join(lines) + "\n"
+
+          # Validate both files before writing.
+          updates = {}
+          for filename, language in [
+              ("README.md", "fr"),
+              ("README.en.md", "en"),
+          ]:
+              path = Path(filename)
+              original = path.read_text(encoding="utf-8")
+
+              if (
+                  original.count(START) != 1
+                  or original.count(END) != 1
+                  or original.index(START) >= original.index(END)
+              ):
+                  raise RuntimeError(
+                      f"{filename}: missing or invalid TRAFFIC markers."
+                  )
+
+              content = render(language)
+              updates[path] = re.sub(
+                  re.escape(START) + r".*?" + re.escape(END),
+                  lambda match: START + "\n" + content + END,
+                  original,
+                  flags=re.S,
+              )
+
+          for path, content in updates.items():
+              path.write_text(content, encoding="utf-8")
+
+          print("Both READMEs updated successfully.")
+          PY
+
+      - name: Commit and push changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add README.md README.en.md
+
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "Update repository traffic in both READMEs"
+            git push
+          fi
