@@ -58,24 +58,24 @@ I enjoy exploring new technologies and putting my energy into bringing ideas to 
 
 These counts measure repository traffic and do not represent unique visitors.
 
-- **Total views: 52**
-- **Total clones: 240**
+- **Total views: 114**
+- **Total clones: 246**
 
 ### Top 3 — Most viewed projects
 
 | Rank | Project | Views |
 |---|---|---:|
-| 1 | [qad_progress4gl](https://github.com/hendzormati/qad_progress4gl) | 20 |
-| 2 | [Prometheus-Grafana-Playbooks](https://github.com/hendzormati/Prometheus-Grafana-Playbooks) | 14 |
-| 3 | [kubernetes-playbooks](https://github.com/hendzormati/kubernetes-playbooks) | 10 |
+| 1 | [kubernetes-playbooks](https://github.com/hendzormati/kubernetes-playbooks) | 31 |
+| 2 | [qad_progress4gl](https://github.com/hendzormati/qad_progress4gl) | 26 |
+| 3 | [Prometheus-Grafana-Playbooks](https://github.com/hendzormati/Prometheus-Grafana-Playbooks) | 12 |
 
 ### Top 3 — Most cloned projects
 
 | Rank | Project | Clones |
 |---|---|---:|
-| 1 | [kubernetes-playbooks](https://github.com/hendzormati/kubernetes-playbooks) | 67 |
+| 1 | [kubernetes-playbooks](https://github.com/hendzormati/kubernetes-playbooks) | 74 |
 | 2 | [SpringBoot](https://github.com/hendzormati/SpringBoot) | 46 |
-| 3 | [DotNet](https://github.com/hendzormati/DotNet) | 39 |
+| 3 | [DotNet](https://github.com/hendzormati/DotNet) | 40 |
 
-Last updated : **2026-10-06 17:44 CEST (Europe/Paris)**
+Last updated : **2026-10-11 05:20 CEST (Europe/Paris)**
 <!-- TRAFFIC:END -->
