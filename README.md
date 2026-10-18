@@ -58,24 +58,24 @@ J’aime explorer de nouvelles technologies et m’investir pleinement pour voir
 
 Ces chiffres concernent les dépôts et ne correspondent pas à des visiteurs uniques.
 
-- **Vues totales : 114**
-- **Clones totaux : 246**
+- **Vues totales : 130**
+- **Clones totaux : 167**
 
 ### Top 3 — Projets les plus consultés
 
 | Rang | Projet | Vues |
 |---|---|---:|
-| 1 | [kubernetes-playbooks](https://github.com/hendzormati/kubernetes-playbooks) | 31 |
-| 2 | [qad_progress4gl](https://github.com/hendzormati/qad_progress4gl) | 26 |
-| 3 | [Prometheus-Grafana-Playbooks](https://github.com/hendzormati/Prometheus-Grafana-Playbooks) | 12 |
+| 1 | [kubernetes-playbooks](https://github.com/hendzormati/kubernetes-playbooks) | 39 |
+| 2 | [Prometheus-Grafana-Playbooks](https://github.com/hendzormati/Prometheus-Grafana-Playbooks) | 22 |
+| 3 | [qad_progress4gl](https://github.com/hendzormati/qad_progress4gl) | 20 |
 
 ### Top 3 — Projets les plus clonés
 
 | Rang | Projet | Clones |
 |---|---|---:|
-| 1 | [kubernetes-playbooks](https://github.com/hendzormati/kubernetes-playbooks) | 74 |
-| 2 | [SpringBoot](https://github.com/hendzormati/SpringBoot) | 46 |
-| 3 | [DotNet](https://github.com/hendzormati/DotNet) | 40 |
+| 1 | [kubernetes-playbooks](https://github.com/hendzormati/kubernetes-playbooks) | 50 |
+| 2 | [SpringBoot](https://github.com/hendzormati/SpringBoot) | 27 |
+| 3 | [Prometheus-Grafana-Playbooks](https://github.com/hendzormati/Prometheus-Grafana-Playbooks) | 23 |
 
-Dernière mise à jour : **2026-10-11 05:20 CEST (Europe/Paris)**
+Dernière mise à jour : **2026-10-18 04:31 CEST (Europe/Paris)**
 <!-- TRAFFIC:END -->
