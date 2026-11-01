@@ -58,24 +58,24 @@ J’aime explorer de nouvelles technologies et m’investir pleinement pour voir
 
 Ces chiffres concernent les dépôts et ne correspondent pas à des visiteurs uniques.
 
-- **Vues totales : 40**
-- **Clones totaux : 93**
+- **Vues totales : 49**
+- **Clones totaux : 107**
 
 ### Top 3 — Projets les plus consultés
 
 | Rang | Projet | Vues |
 |---|---|---:|
-| 1 | [kubernetes-playbooks](https://github.com/hendzormati/kubernetes-playbooks) | 19 |
-| 2 | [Prometheus-Grafana-Playbooks](https://github.com/hendzormati/Prometheus-Grafana-Playbooks) | 14 |
-| 3 | [Cuteness-Overdose-Vr](https://github.com/hendzormati/Cuteness-Overdose-Vr) | 5 |
+| 1 | [kubernetes-playbooks](https://github.com/hendzormati/kubernetes-playbooks) | 20 |
+| 2 | [Cuteness-Overdose-Vr](https://github.com/hendzormati/Cuteness-Overdose-Vr) | 9 |
+| 3 | [Prometheus-Grafana-Playbooks](https://github.com/hendzormati/Prometheus-Grafana-Playbooks) | 8 |
 
 ### Top 3 — Projets les plus clonés
 
 | Rang | Projet | Clones |
 |---|---|---:|
-| 1 | [kubernetes-playbooks](https://github.com/hendzormati/kubernetes-playbooks) | 18 |
-| 2 | [simple-k8s-mcp-server](https://github.com/hendzormati/simple-k8s-mcp-server) | 15 |
-| 3 | [Prometheus-Grafana-Playbooks](https://github.com/hendzormati/Prometheus-Grafana-Playbooks) | 13 |
+| 1 | [simple-k8s-mcp-server](https://github.com/hendzormati/simple-k8s-mcp-server) | 17 |
+| 2 | [Prometheus-Grafana-Playbooks](https://github.com/hendzormati/Prometheus-Grafana-Playbooks) | 16 |
+| 3 | [chatbot-api-ensim](https://github.com/hendzormati/chatbot-api-ensim) | 12 |
 
-Dernière mise à jour : **2026-10-25 03:41 CET (Europe/Paris)**
+Dernière mise à jour : **2026-11-01 04:44 CET (Europe/Paris)**
 <!-- TRAFFIC:END -->
